@@ -16,10 +16,6 @@ class User extends Model
     {
         return $this->hasMany(Publication::class);
     }
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
-    }
 }
 class Telegram extends Model
 {
@@ -30,15 +26,18 @@ class Publication extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
 class Tag extends Model
 {
-    public function users()
+    public function publications()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Publication::class);
     }
 }
-class Tag_User extends Model{}
 
 $faker = Faker\Factory::create();
 
@@ -60,6 +59,7 @@ for($i = 0; $i < 50;$i++){
     $publication->text = $faker->text;
     $publication->user_id = rand(3,27);
     $publication->save();
+    $publication->tags()->attach([rand(3,27)]);
     $tag = new Tag();
     $tag->name = $faker->name;
     $tag->save();
@@ -127,13 +127,13 @@ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
 
-CREATE TABLE `tag_user` (
-`user_id` bigint(20) unsigned NOT NULL,
+CREATE TABLE `publication_tag` (
+`publication_id` bigint(20) unsigned NOT NULL,
 `tag_id` bigint(20) unsigned NOT NULL,
 KEY `tag_user_tags_id_fk` (`tag_id`),
-KEY `tag_user_users_id_fk` (`user_id`),
-CONSTRAINT `tag_user_tags_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-CONSTRAINT `tag_user_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+KEY `tag_user_users_id_fk` (`publication_id`),
+CONSTRAINT `publication_tag_publications_id_fk` FOREIGN KEY (`publication_id`) REFERENCES `publications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT `tag_user_tags_id_fk` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 
  */
