@@ -51,6 +51,9 @@ for($i = 0; $i < 25;$i++){
     $telegram->telegram = '@'.$faker->name;
     $telegram->user_id = $user->id;
     $telegram->save();
+    $tag = new Tag();
+    $tag->name = $faker->name;
+    $tag->save();
 }
 for($i = 0; $i < 50;$i++){
     $publication = new Publication();
@@ -59,24 +62,25 @@ for($i = 0; $i < 50;$i++){
     $publication->text = $faker->text;
     $publication->user_id = rand(3,27);
     $publication->save();
-    $publication->tags()->attach([rand(3,27)]);
-    $tag = new Tag();
-    $tag->name = $faker->name;
-    $tag->save();
+    $publication->tags()->attach([rand(1,25)]);
 }
 
 
-
-
-
-//foreach (User::all() as $user){
-//    echo "<h1>{$user->email}</h1>";
-//    foreach ($user->publication as $publication){
-//        echo "<p>{$publication->author}</p>";
-//        echo "<p>{$publication->name}</p>";
-//        echo "<p>{$publication->text}</p>";
-//    }
-//}
+foreach (User::all() as $user){
+    echo "<h1>{$user->email}</h1>";
+    echo "<h1>{$user->telegram->telegram}</h1>";
+    echo '<h2>PUBLICATIONS</h2>';
+    foreach ($user->publication as $publication){
+        $temp = $publication->tags->toArray();
+        echo "<p><h3>Author </h3> {$publication->author}</p>";
+        echo "<p><h3>Name </h3> {$publication->name}</p>";
+        echo "<p><h3>Text </h3> {$publication->text}</p>";
+        echo "<p><h3>Tags </h3> </p>";
+        foreach ($temp as $item){
+            echo "<p>{$item['name']}</p>";
+        }
+    }
+}
 /**
  *
 create schema sandbox;

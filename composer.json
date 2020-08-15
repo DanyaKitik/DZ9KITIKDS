@@ -14,15 +14,10 @@
         }
     ],
     "require": {
-        "php": "5.5",
+        "php": "7.4.8",
         "ext-json": "*",
         "illuminate/database": "^7.22",
         "illuminate/events": "^7.22"
-    },
-    "require-dev": {
-        "ext-intl": "*",
-        "phpunit/phpunit": "^4.8.35 || ^5.7",
-        "squizlabs/php_codesniffer": "^2.9.2"
     },
     "autoload": {
         "psr-4": {
@@ -33,11 +28,6 @@
     "autoload-dev": {
         "psr-4": {
             "Faker\\Test\\": "test/Faker/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.9-dev"
         }
     },
     "config": {
